@@ -1,0 +1,48 @@
+name: 'Create Next Semantic Release'
+description: 'Guess the next semantic version only from existing git tags and recently merged pull-requests labels and create a new GitHub release'
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'
+inputs:
+  github-token:
+    description: "GitHub Token"
+    required: true
+  log-level:
+    description: 'Log Level (DEBUG, INFO, WARNING)'
+    required: false
+    default: 'INFO'
+  major-labels:
+    description: 'Major Labels (coma separated)'
+    required: false
+    default: 'major,breaking,Type: Major'
+  minor-labels:
+    description: 'Minor Labels (coma separated)'
+    required: false
+    default: 'feature,Type: Feature,Type: Minor'
+  ignore-labels:
+    description: 'Ignore Labels (coma separated)'
+    required: false
+    default: 'Type: Hidden'
+  repository:
+    description: "Repository"
+    required: true
+  repository-owner:
+    description: "Repository owner"
+    required: true
+  tag-regex:
+    description: "Regex to match tags"
+    required: false
+    default: ''
+outputs:
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    LOG_LEVEL: ${{ inputs.log-level }}
+    GITHUB_TOKEN: ${{ inputs.github-token }}
+    GITHUB_REPOSITORY: ${{ inputs.repository }}
+    GITHUB_REPOSITORY_OWNER: ${{ inputs.repository-owner }}
+    GNSV_MAJOR_LABELS: ${{ inputs.major-labels }}
+    GNSV_MINOR_LABELS: ${{ inputs.minor-labels }}
+    GNSV_IGNORE_LABELS: ${{ inputs.ignore-labels }}
+    GNSV_TAG_REGEX: ${{ inputs.tag-regex }}
