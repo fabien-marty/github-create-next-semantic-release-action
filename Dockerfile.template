@@ -1,0 +1,13 @@
+FROM alpine:latest
+
+RUN apk add git curl
+COPY download.sh /app/bin/
+
+# Download version {{ VERSION }}
+RUN mkdir -p /app/bin && \
+    cd /app/bin && \
+    ./download.sh "{{ URL }}" github-create-next-semantic-release && \
+    chmod +x github-create-next-semantic-release
+
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
