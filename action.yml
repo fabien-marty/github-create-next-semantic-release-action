@@ -33,6 +33,27 @@ inputs:
     description: "Regex to match tags"
     required: false
     default: ''
+  consider-also-non-merged-prs:
+    description: "Consider also non-merged PRs"
+    required: false
+    default: 'false'
+  release-force:
+    description: "if set, force the version bump and the creation of a release (even if there is no PR)"
+    required: false
+    default: 'false'
+  release-draft:
+    description: "if set, the release is created in draft mode"
+    required: false
+    default: 'false'
+  release-body-template-path:
+    description: "golang template path to generate the release body (if set, release-body-template option is ignored)"
+    required: false
+    default: ""
+  release-body-template:
+    description: "golang template to generate the release body"
+    required: false
+    default: "{{ range . }}- {{.Title}} (#{{.Number}})\n{{ end }}"
+
 outputs:
 runs:
   using: 'docker'
@@ -45,4 +66,9 @@ runs:
     GNSV_MAJOR_LABELS: ${{ inputs.major-labels }}
     GNSV_MINOR_LABELS: ${{ inputs.minor-labels }}
     GNSV_IGNORE_LABELS: ${{ inputs.ignore-labels }}
+    GNSV_CONSIDER_ALSO_NON_MERGED_PRS: ${{ inputs.consider-also-non-merged-prs }}
     GNSV_TAG_REGEX: ${{ inputs.tag-regex }}
+    GNSV_RELEASE_FORCE: ${{ inputs.release-force }}
+    GNSV_RELEASE_DRAFT: ${{ inputs.release-draft }}
+    GNSV_RELEASE_BODY_TEMPLATE: ${{ inputs.release-body-template }}
+    GNSV_RELEASE_BODY_TEMPLATE_PATH: ${{ inputs.release-body-template-path }}
