@@ -30,4 +30,4 @@ jobs:
           github-token: ${{ github.token }} # Let's use the default value of the current workflow
           repository: ${{ github.repository }} # Let's use the default value of the current workflow
           repository-owner: ${{ github.repository_owner }} # Let's use the default value of the current workflow
-          release-force: ${{ github.events.inputs.force == "yes" }}
+          release-force: ${{ github.event.inputs.force == 'yes' }}
