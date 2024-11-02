@@ -1,0 +1,32 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    force:
+      type: choice
+      description: "Force the creation of a release (even if no PR are found)"
+      options:
+        - "yes"
+        - "no"
+      default: "no"
+      required: true
+
+jobs:
+
+  release:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # we need this because fetch-tags=true and because of a GHA bug: https://github.com/actions/checkout/issues/1471
+          fetch-tags: true
+      - id: create-release
+        uses: fabien-marty/github-create-next-semantic-release-action@main
+        with:
+          github-token: ${{ github.token }} # Let's use the default value of the current workflow
+          repository: ${{ github.repository }} # Let's use the default value of the current workflow
+          repository-owner: ${{ github.repository_owner }} # Let's use the default value of the current workflow
+          release-force: ${{ github.events.inputs.force == "yes" }}
