@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  main_ci:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # we need this because fetch-tags=true and because of a GHA bug: https://github.com/actions/checkout/issues/1471
+          fetch-tags: true
+      - name: Make docker image
+        run: |
+          touch Dockerfile # we don't want this file to be rebuilded now
+          make docker
+      - name: Run git checks
+        run: |
+          make no-dirty
+      - name: Run clean
+        run: |
+          make clean
+      - name: Run git checks (after clean)
+        run: |
+          make no-dirty
