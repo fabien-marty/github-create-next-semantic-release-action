@@ -1,9 +1,9 @@
 #!/bin/sh
 
-set -eu
+set -u
 
 cd /github/workspace || exit 1
-git config --global --add safe.directory '*'
+git config --global --add safe.directory '*' || exit 1
 
 NEW_TAG=$(/app/bin/github-create-next-semantic-release .)
 RES=$?
