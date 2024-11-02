@@ -2,14 +2,15 @@ name: Create Release
 
 on:
   workflow_dispatch:
-    force:
-      type: choice
-      description: "Force the creation of a release (even if no PR are found)"
-      options:
-        - "yes"
-        - "no"
-      default: "no"
-      required: true
+    inputs:
+      force:
+        type: choice
+        description: "Force the creation of a release (even if no PR are found)"
+        options:
+          - "yes"
+          - "no"
+        default: "no"
+        required: true
 
 jobs:
 
