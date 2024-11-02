@@ -1,0 +1,74 @@
+name: 'Create Next Semantic Release'
+description: 'Guess the next semantic version only from existing git tags and recently merged pull-requests labels and create a new GitHub release'
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'
+inputs:
+  github-token:
+    description: "GitHub Token"
+    required: true
+  log-level:
+    description: 'Log Level (DEBUG, INFO, WARNING)'
+    required: false
+    default: 'INFO'
+  major-labels:
+    description: 'Major Labels (coma separated)'
+    required: false
+    default: 'major,breaking,Type: Major'
+  minor-labels:
+    description: 'Minor Labels (coma separated)'
+    required: false
+    default: 'feature,Type: Feature,Type: Minor'
+  ignore-labels:
+    description: 'Ignore Labels (coma separated)'
+    required: false
+    default: 'Type: Hidden'
+  repository:
+    description: "Repository"
+    required: true
+  repository-owner:
+    description: "Repository owner"
+    required: true
+  tag-regex:
+    description: "Regex to match tags"
+    required: false
+    default: ''
+  consider-also-non-merged-prs:
+    description: "Consider also non-merged PRs"
+    required: false
+    default: 'false'
+  release-force:
+    description: "if set, force the version bump and the creation of a release (even if there is no PR)"
+    required: false
+    default: 'false'
+  release-draft:
+    description: "if set, the release is created in draft mode"
+    required: false
+    default: 'false'
+  release-body-template-path:
+    description: "golang template path to generate the release body (if set, release-body-template option is ignored)"
+    required: false
+    default: ""
+  release-body-template:
+    description: "golang template to generate the release body"
+    required: false
+    default: "{{ range . }}- {{.Title}} (#{{.Number}})\n{{ end }}"
+
+outputs:
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    LOG_LEVEL: ${{ inputs.log-level }}
+    GITHUB_TOKEN: ${{ inputs.github-token }}
+    GITHUB_REPOSITORY: ${{ inputs.repository }}
+    GITHUB_REPOSITORY_OWNER: ${{ inputs.repository-owner }}
+    GNSV_MAJOR_LABELS: ${{ inputs.major-labels }}
+    GNSV_MINOR_LABELS: ${{ inputs.minor-labels }}
+    GNSV_IGNORE_LABELS: ${{ inputs.ignore-labels }}
+    GNSV_CONSIDER_ALSO_NON_MERGED_PRS: ${{ inputs.consider-also-non-merged-prs }}
+    GNSV_TAG_REGEX: ${{ inputs.tag-regex }}
+    GNSV_RELEASE_FORCE: ${{ inputs.release-force }}
+    GNSV_RELEASE_DRAFT: ${{ inputs.release-draft }}
+    GNSV_RELEASE_BODY_TEMPLATE: ${{ inputs.release-body-template }}
+    GNSV_RELEASE_BODY_TEMPLATE_PATH: ${{ inputs.release-body-template-path }}
