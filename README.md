@@ -56,3 +56,7 @@ Then, **it automatically creates a GitHub release** with guessed version and cor
 - `release-draft`: If set, the release is created in draft mode
 - `release-body-template-path`: If set, golang template path to generate the release body (if set, release-body-template option is ignored)
 - `release-body-template`: Golang template to generate the release body (default to `{{ range . }}- {{.Title}} (#{{.Number}})\n{{ end }}`)
+
+### Outputs
+
+- `new-tag`: the new version/tag (empty if no release was created)
