@@ -53,6 +53,9 @@ inputs:
     description: "golang template to generate the release body"
     required: false
     default: "{{ range . }}- {{.Title}} (#{{.Number}})\n{{ end }}"
+outputs:
+  new-tag:
+    description: "The new version/tag"
 runs:
   using: 'docker'
   image: 'Dockerfile'
